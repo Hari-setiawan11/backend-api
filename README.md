@@ -24,3 +24,24 @@ Install Paket :
 ```bash
     php artisan migrate
 ```
+
+
+
+
+
+
+
+- Instal Paket Install Dompdf via Composer :
+```bash
+    composer require barryvdh/laravel-dompdf
+```
+
+- Tambahkan baris berikut ke array providers di config/app.php: :
+```bash
+    Barryvdh\DomPDF\ServiceProvider::class,
+```
+
+- Publikasikan Konfigurasi dompdf:
+```bash
+    php artisan vendor:publish --provider="Barryvdh\DomPDF\ServiceProvider"
+```
