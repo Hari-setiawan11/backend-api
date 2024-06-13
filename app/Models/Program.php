@@ -9,7 +9,7 @@ class Program extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'programs_id';
+    // protected $primaryKey = 'programs_id';
     
     protected $fillable = [
         'nama_program',

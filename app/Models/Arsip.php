@@ -17,11 +17,11 @@ class Arsip extends Model
 
     public function program()
     {
-        return $this->belongsTo(Program::class, 'programs_id');
+        return $this->belongsTo(Program::class, 'programs_id','id');
     }
 
     public function jenisarsip()
     {
-        return $this->belongsTo(JenisArsip::class, 'jenisarsips_id');
+        return $this->belongsTo(JenisArsip::class, 'jenisarsips_id','id');
     }
 }

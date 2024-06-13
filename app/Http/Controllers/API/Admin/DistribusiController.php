@@ -42,7 +42,7 @@ class DistribusiController extends Controller
                 'anggaran' => 'required|string|max:128',
                 'pengeluaran' => 'required|string|max:128',
                 'file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx|max:2048',
-                'programs_id' => 'required|exists:programs,programs_id',
+                'programs_id' => 'required|exists:programs,id',
             ]);
 
             // Hitung nilai untuk field "sisa"

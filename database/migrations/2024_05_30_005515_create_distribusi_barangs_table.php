@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('distribusi_barangs', function (Blueprint $table) {
             $table->id();
+            $table->string('nama_barang')->nullable(false);
+            $table->string('volume')->nullable(false);
+            $table->string('satuan')->nullable(false);
+            $table->string('harga_satuan')->nullable(false);
+            $table->string('jumlah')->nullable(false);
+            $table->unsignedBigInteger('distribusis_id');
+            $table->foreign('distribusis_id')->references('id')->on('distribusis')->onDelete('cascade');
             $table->timestamps();
         });
     }

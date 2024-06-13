@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jenis_arsips', function (Blueprint $table) {
-            $table->id('jenisarsips_id');
+            $table->id();
             $table->string('nama_arsip')->nullable(false);
             $table->text('deskripsi')->nullable();
             $table->timestamps();

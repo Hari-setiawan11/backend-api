@@ -33,19 +33,44 @@ class DistribusiBarangController extends Controller
 
     public function store(Request $request)
     {
-
         try {
+            // Validasi data yang diterima
             $validatedData = $request->validate([
-                'distribusis_id' => 'required|exists:programs,programs_id',
-                'programs_id' => 'required|exists:programs,programs_id',
+                'distribusis_id' => 'required|exists:distribusis,id',
+                'nama_barang' => 'required',
+                'volume' => 'required|numeric',
+                'satuan' => 'required|in:nota,kuitansi', // Validasi khusus untuk field satuan
+                'harga_satuan' => 'required|numeric',
             ]);
 
+            // Hitung nilai untuk field "jumlah"
+            $volume = floatval($validatedData['volume']);
+            $harga_satuan = floatval($validatedData['harga_satuan']);
+            $jumlah = $volume * $harga_satuan;
+
+            // Tambahkan nilai "jumlah" ke dalam data yang divalidasi
+            $validatedData['jumlah'] = $jumlah;
+
+            // Ambil field anggaran dari tabel distribusi
+            $distribusi = Distribusi::findOrFail($validatedData['distribusis_id']);
+            $anggaran = floatval($distribusi->anggaran);
+
+            // Periksa apakah total jumlah melebihi anggaran
+            $totalJumlahDistribusiBarang = DistribusiBarang::where('distribusis_id', $validatedData['distribusis_id'])->sum('jumlah');
+            if ($totalJumlahDistribusiBarang + $jumlah > $anggaran) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Total Harga Barang Melebihi Pengeluaran Yang Tertulis'
+                ], 400);
+            }
+
+            // Simpan data distribusi barang ke database
             $distribusibarangs = DistribusiBarang::create($validatedData);
             $url = '/admin/distribusibarangs';
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Add distribusi barang seccessfull',
+                'message' => 'Add distribusi barang successful',
                 'distribusibarangs' => $distribusibarangs,
                 'url' => $url,
             ]);
@@ -57,6 +82,8 @@ class DistribusiBarangController extends Controller
             ], 500);
         }
     }
+
+
 
     public function edit($id)
     {

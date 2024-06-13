@@ -9,7 +9,7 @@ class JenisArsip extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'jenisarsips_id';
+    // protected $primaryKey = 'jenisarsips_id';
 
     protected $fillable = [
         'nama_arsip',

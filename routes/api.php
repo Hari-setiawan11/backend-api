@@ -30,10 +30,33 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 
+
 Route::prefix('admin/')->middleware('auth:sanctum')->group( function (){
-    //manajemen data donasi
-    Route::get('manajemen/datadonasi', [DataDonasiController::class, 'index']);
-    Route::delete('manajemen/datadonasi/delete/{id}', [DataDonasiController::class, 'destroy']);
+    //manajemen program
+    Route::get('manajemen/program', [ProgramController::class, 'index']);
+    Route::post('manajemen/program', [ProgramController::class, 'store']);
+    Route::get('manajemen/program/edit/{id}', [ProgramController::class, 'edit']);
+    Route::put('manajemen/program/update/{id}', [ProgramController::class, 'update']);
+    Route::delete('manajemen/program/delete/{id}', [ProgramController::class, 'destroy']);
+    
+});
+
+Route::prefix('admin/')->middleware('auth:sanctum')->group( function (){
+    //manajemen distribusi
+    Route::get('manajemen/distribusi', [DistribusiController::class, 'index']);
+    Route::post('manajemen/distribusi', [DistribusiController::class, 'store']);
+    Route::get('manajemen/distribusi/edit/{id}', [DistribusiController::class, 'edit']);
+    Route::put('manajemen/distribusi/update/{id}', [DistribusiController::class, 'update']);
+    Route::delete('manajemen/distribusi/delete/{id}', [DistribusiController::class, 'destroy']);
+});
+
+Route::prefix('admin/')->middleware('auth:sanctum')->group( function (){
+    //manajemen distribusi
+    Route::get('manajemen/distribusi-barang', [DistribusiBarangController::class, 'index']);
+    Route::post('manajemen/distribusi-barang', [DistribusiBarangController::class, 'store']);
+    Route::get('manajemen/distribusi-barang/edit/{id}', [DistribusiBarangController::class, 'edit']);
+    Route::put('manajemen/distribusi-barang/update/{id}', [DistribusiBarangController::class, 'update']);
+    Route::delete('manajemen/distribusi-barang/delete/{id}', [DistribusiBarangController::class, 'destroy']);
 });
 
 Route::prefix('admin/')->middleware('auth:sanctum')->group( function (){
@@ -43,15 +66,6 @@ Route::prefix('admin/')->middleware('auth:sanctum')->group( function (){
     Route::get('manajemen/formdonasi/edit/{id}', [FormdonasiController::class, 'edit']);
     Route::put('manajemen/formdonasi/update/{id}', [FormBarangController::class, 'update']);
     Route::delete('manajemen/formdonasi/delete/{id}', [FormDonasiController::class, 'destroy']);
-});
-Route::prefix('admin/')->middleware('auth:sanctum')->group( function (){
-    //manajemen program
-    Route::get('manajemen/program', [ProgramController::class, 'index']);
-    Route::post('manajemen/program', [ProgramController::class, 'store']);
-    Route::get('manajemen/program/edit/{id}', [ProgramController::class, 'edit']);
-    Route::put('manajemen/program/update/{id}', [ProgramController::class, 'update']);
-    Route::delete('manajemen/program/delete/{id}', [ProgramController::class, 'destroy']);
-
 });
 
 Route::prefix('admin/')->middleware('auth:sanctum')->group( function (){
@@ -101,20 +115,9 @@ Route::prefix('admin/')->middleware('auth:sanctum')->group( function (){
 });
 
 Route::prefix('admin/')->middleware('auth:sanctum')->group( function (){
-    //manajemen distribusi
-    Route::get('manajemen/distribusi', [DistribusiController::class, 'index']);
-    Route::post('manajemen/distribusi', [DistribusiController::class, 'store']);
-    Route::get('manajemen/distribusi/edit/{id}', [DistribusiController::class, 'edit']);
-    Route::put('manajemen/distribusi/update/{id}', [DistribusiController::class, 'update']);
-    Route::delete('manajemen/distribusi/delete/{id}', [DistribusiController::class, 'destroy']);
+    //manajemen data donasi
+    Route::get('manajemen/datadonasi', [DataDonasiController::class, 'index']);
+    Route::delete('manajemen/datadonasi/delete/{id}', [DataDonasiController::class, 'destroy']);
 });
 
-Route::prefix('admin/')->middleware('auth:sanctum')->group( function (){
-    //manajemen distribusi
-    Route::get('manajemen/distribusi-barang', [DistribusiBarangController::class, 'index']);
-    Route::post('manajemen/distribusi-barang', [DistribusiBarangController::class, 'store']);
-    Route::get('manajemen/distribusi-barang/edit/{id}', [DistribusiBarangController::class, 'edit']);
-    Route::put('manajemen/distribusi-barang/update/{id}', [DistribusiBarangController::class, 'update']);
-    Route::delete('manajemen/distribusi-barang/delete/{id}', [DistribusiBarangController::class, 'destroy']);
-});
 

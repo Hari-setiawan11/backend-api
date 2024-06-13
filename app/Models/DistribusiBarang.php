@@ -11,16 +11,15 @@ class DistribusiBarang extends Model
 
     protected $fillable = [
         'distribusis_id',
-        'databarangs_id',
+        'nama_barang',
+        'volume',
+        'satuan',
+        'harga_satuan',
+        'jumlah',
     ];
 
     public function distribusi()
     {
-        return $this->belongsTo(Distribusi::class, 'distribusis_id');
-    }
-
-    public function databarang()
-    {
-        return $this->belongsTo(DataBarang::class, 'databarangs_id');
+        return $this->belongsTo(Distribusi::class, 'distribusis_id','id');
     }
 }

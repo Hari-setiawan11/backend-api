@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('file')->nullable();
             $table->unsignedBigInteger('programs_id');
             $table->unsignedBigInteger('jenisarsips_id');
-            $table->foreign('programs_id')->references('programs_id')->on('programs')->onDelete('cascade');
-            $table->foreign('jenisarsips_id')->references('jenisarsips_id')->on('jenis_arsips')->onDelete('cascade');
+            $table->foreign('programs_id')->references('id')->on('programs')->onDelete('cascade');
+            $table->foreign('jenisarsips_id')->references('id')->on('jenis_arsips')->onDelete('cascade');
             $table->timestamps();
         });
     }

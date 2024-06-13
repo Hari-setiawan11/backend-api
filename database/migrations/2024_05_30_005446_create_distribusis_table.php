@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('distribusis', function (Blueprint $table) {
-            $table->id('distribusis_id');
+            $table->id();
             $table->date('tanggal')->nullable(false);
             $table->string('tempat')->nullable(false);
             $table->string('penerima_manfaat')->nullable(false);
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('sisa')->nullable(false);
             $table->string('file')->nullable();
             $table->unsignedBigInteger('programs_id');
-            $table->foreign('programs_id')->references('programs_id')->on('programs')->onDelete('cascade');
+            $table->foreign('programs_id')->references('id')->on('programs')->onDelete('cascade');
             $table->timestamps();
         });
     }
