@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('alamat')->nullable();
             $table->string('telephone')->nullable();
             $table->string('password')->nullable(false);
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
