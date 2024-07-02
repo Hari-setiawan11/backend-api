@@ -1,24 +1,28 @@
 <?php
 
-namespace App\Http\Controllers\API\User;
+namespace App\Http\Controllers\API\Admin;
 
 use Exception;
+use App\Models\User;
 use App\Models\BuktiDonasi;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\File;
 
-class FormDonasiController extends Controller
+class RekapDonasiController extends Controller
 {
-    public function index()
+    public function index($id)
     {
         try {
-            $donasis = BuktiDonasi::all();
+            // Cari pengguna berdasarkan ID
+            $user = User::findOrFail($id);
+
+            // Ambil data donasi berdasarkan users_id
+            $donasis = BuktiDonasi::where('users_id', $id)->get();
             $url = '/admin/donasi';
 
             return response()->json([
-                'status' => 'succes',
-                'message' => 'Get data donasi successfull',
+                'status' => 'success',
+                'message' => 'Get data donasi successful',
                 'donasi' => $donasis,
                 'url' => $url,
             ]);
@@ -30,7 +34,7 @@ class FormDonasiController extends Controller
             ], 500);
         }
     }
-
+    
     public function store(Request $request)
     {
         try {
@@ -40,23 +44,24 @@ class FormDonasiController extends Controller
                 'deskripsi' => 'required|string',
                 'file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx,jpg,png|max:2048',
                 'users_id' => 'required|integer|exists:users,id',
-
             ]);
+
             if ($request->hasFile('file')) {
-                $files = $request->file('file');
-                if ($files->isValid()) {
-                    $fileName = uniqid('donasi_') . '.' . $files->getClientOriginalExtension();
-                    $files->move(public_path('file/donasi'), $fileName);
+                $file = $request->file('file');
+                if ($file->isValid()) {
+                    $fileName = uniqid('donasi_') . '.' . $file->getClientOriginalExtension();
+                    $file->move(public_path('file/donasi'), $fileName);
                     $validatedData['file'] = $fileName;
                 }
             }
-            $donasis = BuktiDonasi::create($validatedData);
+
+            $donasi = BuktiDonasi::create($validatedData);
             $url = '/admin/donasi';
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Add donasi seccessfull',
-                'donasi' => $donasis,
+                'message' => 'Add donasi successful',
+                'donasi' => $donasi,
                 'url' => $url,
             ]);
         } catch (\Exception $e) {
@@ -68,17 +73,17 @@ class FormDonasiController extends Controller
         }
     }
 
+    // Fungsi untuk mengambil data donasi berdasarkan ID
     public function edit($id)
     {
         try {
-            $donasis = BuktiDonasi::findOrFail($id);
-
+            $donasi = BuktiDonasi::findOrFail($id);
             $url = sprintf('/admin/donasi/edit/%d', $id);
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Get donasi successful',
-                'donasi' => $donasis,
+                'donasi' => $donasi,
                 'url' => $url,
             ]);
         } catch (\Exception $e) {
@@ -90,10 +95,11 @@ class FormDonasiController extends Controller
         }
     }
 
+    // Fungsi untuk memperbarui data donasi
     public function update(Request $request, $id)
     {
         try {
-            $donasis = BuktiDonasi::findOrfail($id);
+            $donasi = BuktiDonasi::findOrFail($id);
 
             $validatedData = $request->validate([
                 'tanggal' => 'required|string|max:255',
@@ -104,22 +110,23 @@ class FormDonasiController extends Controller
             ]);
 
             if ($request->hasFile('file')) {
-                if ($donasis->file) {
-                    File::delete(public_path('file/donasi' . $donasis->file));
+                if ($donasi->file) {
+                    File::delete(public_path('file/donasi/' . $donasi->file));
                 }
 
-                $files = $request->file('file');
-                $FileName = uniqid('donasi_') . '.' . $file->getClientOriginalExtension();
-                $files->move(public_path('file/donasi'), $FileName);
-                $validatedData['file'] = $FileName;
+                $file = $request->file('file');
+                $fileName = uniqid('donasi_') . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('file/donasi'), $fileName);
+                $validatedData['file'] = $fileName;
             }
-            $donasis->update($validatedData);
+
+            $donasi->update($validatedData);
             $url = '/admin/donasi';
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Update donasi seccesfull',
-                'donasi' => $donasis,
+                'message' => 'Update donasi successful',
+                'donasi' => $donasi,
                 'url' => $url,
             ]);
         } catch (\Exception $e) {
@@ -131,21 +138,22 @@ class FormDonasiController extends Controller
         }
     }
 
+    // Fungsi untuk menghapus data donasi
     public function destroy($id)
     {
         try {
-            $donasis = BuktiDonasi::findOrFail($id);
+            $donasi = BuktiDonasi::findOrFail($id);
 
-            if ($donasis->file) {
-                File::delete(public_path('file/donasi/' . $donasis->file));
+            if ($donasi->file) {
+                File::delete(public_path('file/donasi/' . $donasi->file));
             }
 
-            $donasis->delete();
+            $donasi->delete();
             $url = '/admin/donasi';
             
             return response()->json([
-                'status' => 'seccess',
-                'message' => 'donasi has been removed',
+                'status' => 'success',
+                'message' => 'Donasi has been removed',
                 'url' => $url,
             ]);
         } catch (\Exception $e) {

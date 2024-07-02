@@ -79,6 +79,7 @@ class DistribusiController extends Controller
             ], 500);
         }
     }
+    
     public function edit($id)
     {
         try {

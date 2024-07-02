@@ -39,8 +39,8 @@ class ArsipController extends Controller
         try {
             $validatedData = $request->validate([
                 'file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx|max:2048',
-                'programs_id' => 'required|exists:programs,programs_id',
-                'jenisarsips_id' => 'required|exists:jenis_arsips,jenisarsips_id',
+                'programs_id' => 'required|exists:programs,id',
+                'jenisarsips_id' => 'required|exists:jenis_arsips,id',
 
             ]);
 
@@ -98,8 +98,8 @@ class ArsipController extends Controller
 
             $validatedData = $request->validate([
                 'file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx|max:2048',
-                'programs_id' => 'required|exists:programs,programs_id',
-                'jenisarsips_id' => 'required|exists:jenis_arsips,jenisarsips_id',
+                'programs_id' => 'required|exists:programs,id',
+                'jenisarsips_id' => 'required|exists:jenis_arsips,id',
             ]);
 
             if ($request->hasFile('file')) {
