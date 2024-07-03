@@ -24,6 +24,7 @@ class ProgramControllerTest extends TestCase
             'password' => Hash::make('password'),
         ]);
     }
+
     /** @test */
     public function user_can_access_program_index()
     {
@@ -35,14 +36,15 @@ class ProgramControllerTest extends TestCase
 
         Log::info($response->getContent());
 
-        $response->AssertStatus(200)
-        ->assertJson([
-            'status' => 'succes',
-            'message' => 'Get data program successfull',
-        ]);
+        $response->assertStatus(200)
+            ->assertJson([
+                'status' => 'succes',
+                'message' => 'Get data program successfull',
+            ]);
     }
+
     /** @test */
-    public function user_cannot_acces_program_index()
+    public function user_cannot_access_program_index()
     {
         $response = $this->getJson('/api/admin/manajemen/program');
 
@@ -52,11 +54,11 @@ class ProgramControllerTest extends TestCase
     }
 
     /** @test */
-    public function User_can_store_program()
+    public function user_can_store_program()
     {
         $this->actingAs($this->admin, 'sanctum');
 
-        $response = $this->postJson('/api/admin/manajemen/program',[
+        $response = $this->postJson('/api/admin/manajemen/program', [
             'nama_program' => 'Program Test',
             'deskripsi' => 'ujicoba',
             'file' => null,
@@ -65,28 +67,84 @@ class ProgramControllerTest extends TestCase
         Log::info($response->getContent());
 
         $response->assertStatus(200)
-        ->assertJson([
-            'status' => 'success',
-            'message' => 'Add program seccessfull',
-        ]);
+            ->assertJson([
+                'status' => 'success',
+                'message' => 'Add program seccessfull',
+            ]);
     }
+
     /** @test */
     public function user_cannot_store_program()
     {
         $this->actingAs($this->admin, 'sanctum');
 
         $response = $this->postJson('/api/admin/manajemen/program', [
-            'nama_program' => '', //nama program tidak boleh kosong
-            'deskripsi' => '',//deskripsi tidak boleh kosong
+            'nama_program' => '', // nama program tidak boleh kosong
+            'deskripsi' => '', // deskripsi tidak boleh kosong
             'file' => '',
         ]);
 
         Log::info($response->getContent());
 
         $response->assertStatus(422)
-        ->assertJson([
-            'nama_program',
-            'deskripsi',
+            ->assertJsonValidationErrors(['nama_program', 'deskripsi']);
+    }
+
+    /** @test */
+    public function user_can_edit_program()
+    {
+        $this->actingAs($this->admin, 'sanctum');
+
+        $program = Program::factory()->create();
+
+        $response = $this->getJson('/api/admin/manajemen/program/edit/' . $program->id);
+
+        Log::info($response->getContent());
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'status' => 'success',
+                'message' => 'Get program successful',
+            ]);
+    }
+
+    /** @test */
+    public function user_can_update_program()
+    {
+        $this->actingAs($this->admin, 'sanctum');
+
+        $program = Program::factory()->create();
+
+        $response = $this->putJson('/api/admin/manajemen/program/update/' . $program->id, [
+            'nama_program' => 'Updated Program',
+            'deskripsi' => 'Updated Description',
+            'file' => null,
         ]);
+
+        Log::info($response->getContent());
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'status' => 'success',
+                'message' => 'Update program successful',
+            ]);
+    }
+
+    /** @test */
+    public function user_can_destroy_program()
+    {
+        $this->actingAs($this->admin, 'sanctum');
+
+        $program = Program::factory()->create();
+
+        $response = $this->deleteJson('/api/admin/manajemen/program/delete/' . $program->id);
+
+        Log::info($response->getContent());
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'status' => 'success',
+                'message' => 'Program has been removed',
+            ]);
     }
 }

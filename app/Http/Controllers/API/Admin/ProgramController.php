@@ -7,6 +7,7 @@ use App\Models\Program;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class ProgramController extends Controller
 {
@@ -23,6 +24,8 @@ class ProgramController extends Controller
                 'url' => $url,
             ]);
         } catch (Exception $e) {
+            Log::error('Failed to get program: ' . $e->getMessage());
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to get program',
@@ -57,7 +60,18 @@ class ProgramController extends Controller
                 'program' => $programs,
                 'url' => $url,
             ]);
-        } catch (\Exception $e) {
+        } 
+        catch (Exception $e) {
+            Log::error('Validation error: ' . $e->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation error',
+                'errors' => $e->errors()
+            ], 422);
+        }catch (\Exception $e) {
+            Log::error('Failed to add program: ' . $e->getMessage());
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to add program',
@@ -80,6 +94,8 @@ class ProgramController extends Controller
                 'url' => $url,
             ]);
         } catch (\Exception $e) {
+            Log::error('Failed to get program: ' . $e->getMessage());
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to get program',
@@ -114,11 +130,13 @@ class ProgramController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Update program seccesfull',
+                'message' => 'Update program successful',
                 'program' => $programs,
                 'url' => $url,
             ]);
         } catch (\Exception $e) {
+            Log::error('Failed to update program: ' . $e->getMessage());
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to update program',
@@ -140,11 +158,13 @@ class ProgramController extends Controller
             $url = '/admin/program';
             
             return response()->json([
-                'status' => 'seccess',
+                'status' => 'success',
                 'message' => 'Program has been removed',
                 'url' => $url,
             ]);
         } catch (\Exception $e) {
+            Log::error('Failed to remove program: ' . $e->getMessage());
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to remove program',
