@@ -58,12 +58,10 @@ Route::prefix('admin/')->middleware('auth:sanctum')->group( function (){
     Route::get('manajemen/distribusi-barang/edit/{id}', [DistribusiBarangController::class, 'edit']);
     Route::put('manajemen/distribusi-barang/update/{id}', [DistribusiBarangController::class, 'update']);
     Route::delete('manajemen/distribusi-barang/delete/{id}', [DistribusiBarangController::class, 'destroy']);
-});
-
-Route::prefix('admin/')->middleware('auth:sanctum')->group(function() {
     //manajemen distribusi cetak pdf
     Route::get('cetakpdf/{distribusis_id}', [CetakPdfController::class, 'cetakPDF']);
 });
+
 
 Route::prefix('admin/')->middleware('auth:sanctum')->group( function (){
     //manajemen Jenis Arsip

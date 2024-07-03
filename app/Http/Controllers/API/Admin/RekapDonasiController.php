@@ -43,8 +43,11 @@ class RekapDonasiController extends Controller
                 'nominal' => 'required|string|max:255',
                 'deskripsi' => 'required|string',
                 'file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx,jpg,png|max:2048',
-                'users_id' => 'required|integer|exists:users,id',
+                // 'users_id' => 'required|integer|exists:users,id',
             ]);
+
+            // Gunakan ID pengguna yang terotentikasi
+            $validatedData['users_id'] = $request->user()->id;
 
             if ($request->hasFile('file')) {
                 $file = $request->file('file');

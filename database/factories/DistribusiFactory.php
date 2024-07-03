@@ -24,6 +24,8 @@ class DistribusiFactory extends Factory
      */
     public function definition(): array
     {
+        // $fileExtension = $this->faker->randomElement(['jpg', 'jpeg', 'png', 'pdf', 'docx']); // Pilih secara acak ekstensi file
+
         return [
             'tanggal' => $this->faker->date(),
             'tempat' => $this->faker->address(),
@@ -31,6 +33,7 @@ class DistribusiFactory extends Factory
             'anggaran' => $this->faker->randomFloat(2, 1000, 5000),
             'pengeluaran' => $this->faker->randomFloat(2, 500, 3000),
             'file' => $this->faker->image('public/file/distribusi', 640, 480, null, false), // generates a placeholder image
+            // 'file' => $this->faker->image('public/file/distribusi', 640, 480, null, false).'.'.$fileExtension, // generates a placeholder image
             'programs_id' => Program::factory(),
         ];
     }

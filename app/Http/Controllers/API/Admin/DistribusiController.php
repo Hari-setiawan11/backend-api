@@ -75,12 +75,16 @@ class DistribusiController extends Controller
                 'url' => $url,
             ], 200);
         } catch (Exception $e) {
+            Log::error('Validation error: ' . $e->getMessage());
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Validation error',
                 'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
+            Log::error('Failed to add program: ' . $e->getMessage());
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to add distribusi',
