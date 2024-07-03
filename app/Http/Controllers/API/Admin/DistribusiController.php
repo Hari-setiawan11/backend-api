@@ -6,6 +6,7 @@ use Exception;
 use App\Models\Program;
 use App\Models\Distribusi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 
@@ -24,6 +25,8 @@ class DistribusiController extends Controller
                 'url' => $url,
             ]);
         } catch (Exception $e) {
+            Log::error('Failed to get Distribusi: ' . $e->getMessage());
+            
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to get distribusi',
@@ -70,7 +73,13 @@ class DistribusiController extends Controller
                 'message' => 'Add distribusi successful',
                 'distribusi' => $distribusis,
                 'url' => $url,
-            ]);
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation error',
+                'errors' => $e->errors(),
+            ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -88,7 +97,7 @@ class DistribusiController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Get distribusi successful',
+                'message' => 'Get distribusi successfull',
                 'distribusi' => $distribusis,
                 'url' => $url,
             ]);
@@ -162,7 +171,7 @@ class DistribusiController extends Controller
             $url = '/admin/distribusi';
             
             return response()->json([
-                'status' => 'seccess',
+                'status' => 'success',
                 'message' => 'Distribusi has been removed',
                 'url' => $url,
             ]);

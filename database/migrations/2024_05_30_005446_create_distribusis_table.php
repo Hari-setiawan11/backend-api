@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('penerima_manfaat')->nullable(false);
             $table->string('anggaran')->nullable(false);
             $table->string('pengeluaran')->nullable(false);
-            $table->string('sisa')->nullable(false);
+            $table->string('sisa')->nullable();
             $table->string('file')->nullable();
             $table->unsignedBigInteger('programs_id');
             $table->foreign('programs_id')->references('id')->on('programs')->onDelete('cascade');
